@@ -54,30 +54,30 @@ module Fixed_Point_Unit
     // State machine for square root
     localparam INITIAL = 2'd0;
     localparam SQRT = 2'd1;
-    reg state;
+    reg state1;
     reg [1 : 0] two_bit;
 
     always @(posedge clk) begin
         if (reset) begin
-            state <= INITIAL;
+            state1 <= INITIAL;
             root <= 0;
             root_ready <= 0;
             operand_1_temp <= operand_1;
         end else begin
-            case (state)
+            case (state1)
                 INITIAL: begin
                     if (operation == `FPU_SQRT) begin
                         // Initialize for square root calculation
-                        radicant <= operand_1[WIDTH - 1: WIDTH - 2];
+                        radicand <= operand_1[WIDTH - 1: WIDTH - 2];
                         temp_root <= 2'b01;
                         iteration <= (WIDTH + FBITS) / 2; // Calculate iterations for fixed-point
-                        state <= SQRT;
+                        state1 <= SQRT;
                         final_result <= 0;
                     end
                 end
                 SQRT: begin
                     if (iteration > 0) begin
-                        //radicant minus temp_root to find next digit for final_result
+                        //radicand minus temp_root to find next digit for final_result
                         temp_result <= radicand - temp_root;
                         //Checking if temp_result is negative or not
                         if(temp_result < 0 ) begin
@@ -92,7 +92,7 @@ module Fixed_Point_Unit
                         operand_1_temp <= operand_1_temp << 2;
                         //Extract two MSB bits of operand_1e_temp
                         two_bit <= operand_1_temp[WIDTH - 1 : WIDTH - 2];
-                        //Append 01 to radicant for next iteration
+                        //Append 01 to radicand for next iteration
                         radicand <= (radicand << 2) + two_bit;
                         //Append 01 to result for next iteration
                         temp_root <= (final_result << 2) + 1 ;
@@ -101,7 +101,7 @@ module Fixed_Point_Unit
                     end else begin
                         root <= final_result;
                         root_ready <= 1;
-                        state <= INITIAL;
+                        state1 <= INITIAL;
                     end
                 end
             endcase
