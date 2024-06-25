@@ -43,6 +43,70 @@ module Fixed_Point_Unit
         /*
          *  Describe Your Square Root Calculator Circuit Here.
          */
+    // Internal signals for square root
+    reg [WIDTH - 1 : 0] radicand;
+    reg [WIDTH - 1 : 0] temp_root;
+    reg [WIDTH - 1 : 0] temp_result;
+    reg [WIDTH - 1 : 0] final_result;
+    reg [WIDTH - 1 : 0] iteration;
+    reg [WIDTH - 1 : 0] operand_1_temp;
+
+    // State machine for square root
+    localparam INITIAL = 2'd0;
+    localparam SQRT = 2'd1;
+    reg state;
+    reg [1 : 0] two_bit;
+
+    always @(posedge clk) begin
+        if (reset) begin
+            state <= INITIAL;
+            root <= 0;
+            root_ready <= 0;
+            operand_1_temp <= operand_1;
+        end else begin
+            case (state)
+                INITIAL: begin
+                    if (operation == `FPU_SQRT) begin
+                        // Initialize for square root calculation
+                        radicant <= operand_1[WIDTH - 1: WIDTH - 2];
+                        temp_root <= 2'b01;
+                        iteration <= (WIDTH + FBITS) / 2; // Calculate iterations for fixed-point
+                        state <= SQRT;
+                        final_result <= 0;
+                    end
+                end
+                SQRT: begin
+                    if (iteration > 0) begin
+                        //radicant minus temp_root to find next digit for final_result
+                        temp_result <= radicand - temp_root;
+                        //Checking if temp_result is negative or not
+                        if(temp_result < 0 ) begin
+                            //If result is negative next digit is 0 and a shift will work
+                            final_result <= (final_result << 1);
+                        end else begin
+                            //If result is not negative next digit will be 1. A shift and a plus 1 
+                            final_result <= (final_result << 1) + 1;
+                        end
+
+                        //Shifting operan_1_temp to bring next two MSB bits
+                        operand_1_temp <= operand_1_temp << 2;
+                        //Extract two MSB bits of operand_1e_temp
+                        two_bit <= operand_1_temp[WIDTH - 1 : WIDTH - 2];
+                        //Append 01 to radicant for next iteration
+                        radicand <= (radicand << 2) + two_bit;
+                        //Append 01 to result for next iteration
+                        temp_root <= (final_result << 2) + 1 ;
+                        
+                        iteration <= iteration - 1;
+                    end else begin
+                        root <= final_result;
+                        root_ready <= 1;
+                        state <= INITIAL;
+                    end
+                end
+            endcase
+        end
+    end
 
     // ------------------ //
     // Multiplier Circuit //
