@@ -7,8 +7,9 @@
 Name : Ehsan Seyfibonab <br/>
 Student number : 97412229 <br/>
 Date : 07/02/2024 <br/>
-<div align="justify">
 *************************************************************************
+<div align="justify">
+
 ## Multiplication result bit selection
 
 ```
