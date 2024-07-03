@@ -3,9 +3,9 @@
 > Light Utilization with Multicycle Operational Stages (LUMOS) RISC-V Processor Core
 #### Computer Organization Spring 2024 (Final Project)
 #### Iran Univeristy of Science and Technology
-Name : Ehsan Seyfibonab
-Student number : 97412229
-Date : 07/02/2024
+Name : Ehsan Seyfibonab <br/>
+Student number : 97412229 <br/>
+Date : 07/02/2024 <br/>
 <div align="justify">
 
 ## Multiplication result bit selection
