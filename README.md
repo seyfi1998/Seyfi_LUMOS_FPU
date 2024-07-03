@@ -1,13 +1,14 @@
 # <img src="https://github.com/IUST-Computer-Organization/.github/blob/main/images/CompOrg_orange.png" alt="Image" width="85" height="85" style="vertical-align:middle"> LUMOS RISC-V
 
 > Light Utilization with Multicycle Operational Stages (LUMOS) RISC-V Processor Core
-#### Computer Organization Spring 2024 (Final Project)
+#### Computer Organization - Spring 2024 (Final Project)
 #### Iran Univeristy of Science and Technology
+*************************************************************************
 Name : Ehsan Seyfibonab <br/>
 Student number : 97412229 <br/>
 Date : 07/02/2024 <br/>
 <div align="justify">
-
+*************************************************************************
 ## Multiplication result bit selection
 
 ```
